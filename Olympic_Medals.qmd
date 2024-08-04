@@ -12,6 +12,7 @@ out-width: "100%"
 fig-align: center
 ---
 
+
 ```{r}
 #| label: setup
 
@@ -25,7 +26,7 @@ library(janitor)
 library(ggrepel)
 
 # Source functions
-source("R/Scraping Functions.R")
+source("R/functions.R")
 
 # Define plot style
 colors <- c("Gold" = "gold", "Silver" = "#C0C0C0", "Bronze" = "#CD7F32")
@@ -346,4 +347,4 @@ plot +
 -   Spain: [1992](https://en.wikipedia.org/wiki/Spain_at_the_1992_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Spain_at_the_2024_Summer_Olympics){target="_blank"}.
 -   Germany: [2020](https://en.wikipedia.org/wiki/Germany_at_the_2020_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Germany_at_the_2024_Summer_Olympics){target="_blank"}.
 -   France: [1996](https://en.wikipedia.org/wiki/France_at_the_1996_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/France_at_the_2024_Summer_Olympics){target="_blank"}.
--   Check out my [GitHub repository](https://github.com/dani-f){target="_blank"} to see how this report was compiled and adapt it to your country.
+-   Check out my [GitHub repository](https://github.com/dani-f/olympic-medals){target="_blank"} to see how this report was compiled and adapt it to your country.
