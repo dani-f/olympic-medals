@@ -1,0 +1,349 @@
+---
+title: "Olympic Medals 2024"
+format: html
+execute:
+  warning: false
+  echo: false
+editor_options: 
+  chunk_output_type: console
+fig-width: 10
+fig-asp: 0.618
+out-width: "100%"
+fig-align: center
+---
+
+```{r}
+#| label: setup
+
+# Load libraries for functions to work
+library(httr)
+library(rvest)
+library(tidyverse)
+library(magrittr)
+library(purrr)
+library(janitor)
+library(ggrepel)
+
+# Source functions
+source("R/Scraping Functions.R")
+
+# Define plot style
+colors <- c("Gold" = "gold", "Silver" = "#C0C0C0", "Bronze" = "#CD7F32")
+linecolor <- c("darkorange", "cadetblue")
+plot_style <- theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 20, face = "bold"),
+        panel.grid.minor.x = element_blank(),
+        strip.text = element_text(size = 20, face = "bold"),
+        axis.text = element_text(size = 14),
+        axis.title = element_text(size = 14),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 14))
+
+```
+
+### What's in here?
+
+In this post, we'll compare the officially communicated goals that nations are aiming for against the reality of Paris 2024 Olympic Games.
+
+Stay tuned and visit daily for the latest updates, as this report will be refreshed every day to keep you informed.
+
+*Last update date: `r paste0(format(Sys.time(), format = "%F %R"), "h")`*
+
+### Select your Country
+
+::: panel-tabset
+## Spain
+
+Spain is dreaming big for the Paris 2024 Olympic Games.
+
+No one is hiding that [the medal target](https://elpais.com/deportes/juegos-olimpicos/2024-07-08/la-delegacion-espanola-para-los-juegos-olimpicos-mas-deportistas-mas-mujeres-y-mas-equipos.html){target="_blank"} is to beat the 22 medals won in Barcelona’s 1992 Olympics, the best Olympic Games of the country's history.
+
+But is Spain on the right track?
+
+```{r}
+#| label: load data spain
+
+# Although functions work with more values, I recommend to only load 1 country and 2 years for comparison
+selected_year <- c(1992, 2024)
+selected_country <- c("Spain")
+
+olympics_medal_table <- scrape_and_clean_olympics_wiki_multiple(selected_year = selected_year, selected_country = selected_country)
+
+```
+
+```{r}
+#| label: prepare data spain
+
+olympics_list <- transform_olympics_data_as_list(olympics_medal_table)
+
+```
+
+```{r}
+#| label: define plot style spain
+
+linetypes <- setNames(c("dotted", "solid"), selected_year) # use setNames() to enquote numeric values
+
+```
+
+```{r}
+#| label: plot running total comparison spain
+
+plot <- plot_olympics_data(olympics_list$olympics_medal_table_summarized_pivoted,
+                           olympics_list$max_days,
+                           selected_country[[1]])
+plot +
+    labs(x = "Day",
+         y = "Running Total of Medals",
+         color = "Year") +
+    scale_x_continuous(breaks = 0 : max(olympics_list$max_days$max_day)) +
+    scale_color_manual(values = linecolor) +
+    scale_linetype_manual(values = linetypes, guide = "none") +
+  plot_style
+
+```
+
+```{r}
+#| label: fitted model spain
+
+fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summarized_pivoted)
+
+```
+
+### Gold, Silver or Bronze?
+
+To reach the `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country)` medals they won in `r selected_year[[1]]`, they now need to win an average of `r fitted_model$slope[[1]] %>% round(1)` medals per day.
+
+The current count of silver and bronze medals is equal or higher than that achieved in Barcelona, but it's the gold medals that are the missing. Can Spain make up for its gold medal shortcomings?
+
+```{r}
+#| label: plot running total per medal comparison spain
+#| fig-height: 8
+
+plot <- plot_olympics_data_per_medal(olympics_list$olympics_medal_table_summarized,
+                                     selected_country[[1]])
+
+plot +
+  labs(x = "Day",
+       y = "Running Total of Medals",
+       linetype = "Year") +
+  scale_x_continuous(breaks = 0 : max(olympics_list$max_days$max_day)) +
+  scale_color_manual(values = colors, guide = "none") +
+  scale_linetype_manual(values = linetypes) +
+  plot_style
+
+```
+
+### Milestones
+
+With 382 athletes, Spain presents the second-largest contingent in their history of the Games (the record number of 430 was in Barcelona '92). And for the first time, there are more women (192) than men (190) in the delegation.
+
+We still have a week to go and I will keep you updated here!
+
+## Germany
+
+In a first step, Germany hopes to stop the downward trend in the medals table.
+
+[The official goal](https://www.sueddeutsche.de/sport/olympia-deutschland-medaillenspiegel-ziel-lux.EWYjh2AYTmCducSPwTBPi2){target="_blank"} is to stay in the top 10 like three years ago in Tokyo and to bounce back from that worst result since their reunification.
+
+But is Germany on the right track?
+
+```{r}
+#| label: load data germany
+
+# Although functions work with more values, I recommend to only load 1 country and 2 years for comparison
+selected_year <- c(2020, 2024)
+selected_country <- c("Germany")
+
+olympics_medal_table <- scrape_and_clean_olympics_wiki_multiple(selected_year = selected_year, selected_country = selected_country)
+
+```
+
+```{r}
+#| label: prepare data germany
+
+olympics_list <- transform_olympics_data_as_list(olympics_medal_table)
+
+```
+
+```{r}
+#| label: define plot style germany
+
+linetypes <- setNames(c("dotted", "solid"), selected_year) # use setNames() to enquote numeric values
+
+```
+
+```{r}
+#| label: plot running total comparison germany
+
+plot <- plot_olympics_data(olympics_list$olympics_medal_table_summarized_pivoted,
+                           olympics_list$max_days,
+                           selected_country[[1]])
+plot +
+    labs(x = "Day",
+         y = "Running Total of Medals",
+         color = "Year") +
+    scale_x_continuous(breaks = 0 : max(olympics_list$max_days$max_day)) +
+    scale_color_manual(values = linecolor) +
+    scale_linetype_manual(values = linetypes, guide = "none") +
+  plot_style
+
+```
+
+```{r}
+#| label: fitted model germany
+
+fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summarized_pivoted)
+
+```
+
+### Gold, Silver or Bronze?
+
+They need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day to match their `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals from `r selected_year[[1]]`.
+
+While the total medal target seems far away, with the number of gold medals they've already won, Germany is well on their way to matching their last position.
+
+Are the going to reach the 10 times gold from Tokyo?
+
+```{r}
+#| label: plot running total per medal comparison germany
+#| fig-height: 8
+
+plot <- plot_olympics_data_per_medal(olympics_list$olympics_medal_table_summarized,
+                                     selected_country[[1]])
+
+plot +
+  labs(x = "Day",
+       y = "Running Total of Medals",
+       linetype = "Year") +
+  scale_x_continuous(breaks = 0 : max(olympics_list$max_days$max_day)) +
+  scale_color_manual(values = colors, guide = "none") +
+  scale_linetype_manual(values = linetypes) +
+  plot_style
+
+```
+
+## France
+
+France's Olympic dream is evolving from host to champion.
+
+[Their medal mission](https://www.lemonde.fr/sport/article/2021/10/14/jo-2024-de-grandes-ambitions-mais-des-petites-foulees-pour-le-sport-francais_6098291_3242.html){target="_blank"}, officially communicated by Emmanuel Macron, is to return to the top 5 as in Atlanta 1996, where they have so far obtained their gold medal record.
+
+But is France on the right track?
+
+```{r}
+#| label: load data france
+
+# Although functions work with more values, I recommend to only load 1 country and 2 years for comparison
+selected_year <- c(1996, 2024)
+selected_country <- c("France")
+
+olympics_medal_table <- scrape_and_clean_olympics_wiki_multiple(selected_year = selected_year, selected_country = selected_country)
+
+```
+
+```{r}
+#| label: prepare data france
+
+# Manually fill missing values from Wikipedia table :-(
+olympics_medal_table_imputed <- olympics_medal_table %>% 
+  mutate(date_cod = 
+           case_when(
+             medal == "Gold" &
+               name == "Christophe CapellePhilippe ErmenaultJean-Michel MoninFrancis Moreau" &
+               sport == "Cycling" &
+               event == "Men's team pursuit" ~ as_date("1996-07-27"),
+             medal == "Gold" &
+               name == "Nathalie Lancien" &
+               sport == "Cycling" &
+               event == "Women's points race" ~ as_date("1996-07-28"),
+             medal == "Gold" &
+               name == "Jean-Pierre Amat" &
+               sport == "Shooting" &
+               event == "Men's 50 m rifle three positions" ~ as_date("1996-07-27"),
+             medal == "Silver" &
+               name == "Philippe Ermenault" &
+               sport == "Cycling" &
+               event == "Men's individual pursuit" ~ as_date("1996-07-26"),
+             medal == "Silver" &
+               name == "Marion Clignet" &
+               sport == "Cycling" &
+               event == "Women's individual pursuit" ~ as_date("1996-07-28"),
+             medal == "Silver" &
+               name == "Jeannie Longo" &
+               sport == "Cycling" &
+               event == "Women's road time trial" ~ as_date("1996-08-03"),
+             medal == "Bronze" &
+               name == "Jean-Pierre Amat" &
+               sport == "Shooting" &
+               event == "Men's 10 m air rifle" ~ as_date("1996-07-22"),
+             .default = date_cod))
+
+olympics_list <- transform_olympics_data_as_list(olympics_medal_table_imputed)
+
+```
+
+```{r}
+#| label: define plot style france
+
+linetypes <- setNames(c("dotted", "solid"), selected_year) # use setNames() to enquote numeric values
+
+```
+
+```{r}
+#| label: plot running total comparison france
+
+plot <- plot_olympics_data(olympics_list$olympics_medal_table_summarized_pivoted,
+                           olympics_list$max_days,
+                           selected_country[[1]])
+plot +
+    labs(x = "Day",
+         y = "Running Total of Medals",
+         color = "Year") +
+    scale_x_continuous(breaks = 0 : max(olympics_list$max_days$max_day)) +
+    scale_color_manual(values = linecolor) +
+    scale_linetype_manual(values = linetypes, guide = "none") +
+  plot_style
+
+```
+
+```{r}
+#| label: fitted model france
+
+fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summarized_pivoted)
+
+```
+
+### Gold, Silver or Bronze?
+
+The `r selected_year[[1]]` team has set the bar high with `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals, and they're aiming to reach that number once again. To achieve this, they'll need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day.
+
+Can they set a new record?
+
+```{r}
+#| label: plot running total per medal comparison france
+#| fig-height: 8
+
+plot <- plot_olympics_data_per_medal(olympics_list$olympics_medal_table_summarized,
+                                     selected_country[[1]],
+                                     with_labels = FALSE)
+
+plot +
+  labs(x = "Day",
+       y = "Running Total of Medals",
+       linetype = "Year") +
+  scale_x_continuous(breaks = 0 : max(olympics_list$max_days$max_day)) +
+  scale_color_manual(values = colors, guide = "none") +
+  scale_linetype_manual(values = linetypes) +
+  plot_style
+
+```
+:::
+
+### References
+
+-   Data are downloaded from Wikipedia and depend on the source being up to date.
+-   [Olympic Games overview](https://en.wikipedia.org/wiki/List_of_Olympic_Games_host_cities){target="_blank"}.
+-   Spain: [1992](https://en.wikipedia.org/wiki/Spain_at_the_1992_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Spain_at_the_2024_Summer_Olympics){target="_blank"}.
+-   Germany: [2020](https://en.wikipedia.org/wiki/Germany_at_the_2020_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Germany_at_the_2024_Summer_Olympics){target="_blank"}.
+-   France: [1996](https://en.wikipedia.org/wiki/France_at_the_1996_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/France_at_the_2024_Summer_Olympics){target="_blank"}.
+-   Check out my [GitHub repository](https://github.com/dani-f){target="_blank"} to see how this report was compiled and adapt it to your country.
