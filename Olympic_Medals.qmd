@@ -1,17 +1,22 @@
 ---
+freeze: false
 title: "Olympic Medals 2024"
-format: html
+author: "Me"
+date: today
+categories: [Data Analytics, Sports]
+format:
+  html:
+    toc: true
+    code-tools: true
 execute:
   warning: false
   echo: false
-editor_options: 
-  chunk_output_type: console
+image: "image.jpg"
 fig-width: 10
 fig-asp: 0.618
 out-width: "100%"
 fig-align: center
 ---
-
 
 ```{r}
 #| label: setup
@@ -44,22 +49,22 @@ plot_style <- theme_minimal() +
 
 ### What's in here?
 
-In this post, we'll compare the officially communicated goals that nations are aiming for against the reality of Paris 2024 Olympic Games.
+In this post, we'll compare the officially communicated goals that nations are aiming for against the reality of their performance at the Paris 2024 Olympic Games.
 
-Stay tuned and visit daily for the latest updates, as this report will be refreshed every day to keep you informed.
+Stay tuned and visit daily, as this report will be refreshed every day to keep you informed of the latest updates to the medal table.
 
-*Last update date: `r paste0(format(Sys.time(), format = "%F %R"), "h")`*
+*Last update: `r paste0(format(Sys.time(), format = "%F %R"), "h")`*
 
 ### Select your Country
 
 ::: panel-tabset
 ## Spain
 
-Spain is dreaming big for the Paris 2024 Olympic Games.
+🥇 Spain is dreaming big for the Paris 2024 Olympic Games.
 
-No one is hiding that [the medal target](https://elpais.com/deportes/juegos-olimpicos/2024-07-08/la-delegacion-espanola-para-los-juegos-olimpicos-mas-deportistas-mas-mujeres-y-mas-equipos.html){target="_blank"} is to beat the 22 medals won in Barcelona’s 1992 Olympics, the best Olympic Games of the country's history.
+🎯 No one is hiding that [the medal target](https://elpais.com/deportes/juegos-olimpicos/2024-07-08/la-delegacion-espanola-para-los-juegos-olimpicos-mas-deportistas-mas-mujeres-y-mas-equipos.html){target="_blank"} is to beat the 22 medals won in Barcelona’s 1992 Olympics, the best Olympic Games of the country's history.
 
-But is Spain on the right track?
+📈 But is Spain on the right track?
 
 ```{r}
 #| label: load data spain
@@ -134,19 +139,13 @@ plot +
 
 ```
 
-### Milestones
-
-With 382 athletes, Spain presents the second-largest contingent in their history of the Games (the record number of 430 was in Barcelona '92). And for the first time, there are more women (192) than men (190) in the delegation.
-
-We still have a week to go and I will keep you updated here!
-
 ## Germany
 
-In a first step, Germany hopes to stop the downward trend in the medals table.
+🥇 In a first step, Germany hopes to stop the downward trend in the medals table.
 
-[The official goal](https://www.sueddeutsche.de/sport/olympia-deutschland-medaillenspiegel-ziel-lux.EWYjh2AYTmCducSPwTBPi2){target="_blank"} is to stay in the top 10 like three years ago in Tokyo and to bounce back from that worst result since their reunification.
+🎯 [The official goal](https://www.sueddeutsche.de/sport/olympia-deutschland-medaillenspiegel-ziel-lux.EWYjh2AYTmCducSPwTBPi2){target="_blank"} is to stay in the top 10 like three years ago in Tokyo and to bounce back from that worst result since their reunification.
 
-But is Germany on the right track?
+📈 But is Germany on the right track?
 
 ```{r}
 #| label: load data germany
@@ -225,11 +224,11 @@ plot +
 
 ## France
 
-France's Olympic dream is evolving from host to champion.
+🥇 France's Olympic dream is evolving from host to champion.
 
-[Their medal mission](https://www.lemonde.fr/sport/article/2021/10/14/jo-2024-de-grandes-ambitions-mais-des-petites-foulees-pour-le-sport-francais_6098291_3242.html){target="_blank"}, officially communicated by Emmanuel Macron, is to return to the top 5 as in Atlanta 1996, where they have so far obtained their gold medal record.
+🎯 [Their medal mission](https://www.lemonde.fr/sport/article/2021/10/14/jo-2024-de-grandes-ambitions-mais-des-petites-foulees-pour-le-sport-francais_6098291_3242.html){target="_blank"}, officially communicated by Emmanuel Macron, is to return to the top 5 as in Atlanta 1996, where they have so far obtained their gold medal record.
 
-But is France on the right track?
+📈 But is France on the right track?
 
 ```{r}
 #| label: load data france
@@ -316,9 +315,9 @@ fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summa
 
 ### Gold, Silver or Bronze?
 
-The `r selected_year[[1]]` team has set the bar high with `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals, and they're aiming to reach that number once again. To achieve this, they'll need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day.
+The `r selected_year[[1]]` team has set the bar high with `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals, but France already exceeded that number by `r (fitted_model %>% filter(year == selected_year[[2]]) %>% pull(max_running_total_year_country) %>% round(1)) - fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)`.
 
-Can they set a new record?
+Where will their new gold medal record be set?
 
 ```{r}
 #| label: plot running total per medal comparison france
@@ -342,7 +341,7 @@ plot +
 
 ### References
 
--   Data are downloaded from Wikipedia and depend on the source being up to date.
+-   Data is downloaded from Wikipedia and is subject to the source being up to date.
 -   [Olympic Games overview](https://en.wikipedia.org/wiki/List_of_Olympic_Games_host_cities){target="_blank"}.
 -   Spain: [1992](https://en.wikipedia.org/wiki/Spain_at_the_1992_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Spain_at_the_2024_Summer_Olympics){target="_blank"}.
 -   Germany: [2020](https://en.wikipedia.org/wiki/Germany_at_the_2020_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Germany_at_the_2024_Summer_Olympics){target="_blank"}.
