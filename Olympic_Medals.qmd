@@ -141,7 +141,7 @@ plot +
 
 ## Germany
 
-🥇 In a first step, Germany hopes to stop the downward trend in the medals table.
+🥇 In a first step, Germany hopes to stop the downward trend in the medal table.
 
 🎯 [The official goal](https://www.sueddeutsche.de/sport/olympia-deutschland-medaillenspiegel-ziel-lux.EWYjh2AYTmCducSPwTBPi2){target="_blank"} is to stay in the top 10 like three years ago in Tokyo and to bounce back from that worst result since their reunification.
 
@@ -200,9 +200,9 @@ fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summa
 
 They need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day to match their `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals from `r selected_year[[1]]`.
 
-While the total medal target seems far away, with the number of gold medals they've already won, Germany is well on their way to matching their last position.
+While the overall medal target seems far away, with the number of gold medals they've already won, Germany is well on their way to matching their last position.
 
-Are the going to reach the 10 times gold from Tokyo?
+Are they going to reach the 10 times gold from Tokyo?
 
 ```{r}
 #| label: plot running total per medal comparison germany
@@ -346,4 +346,6 @@ plot +
 -   Spain: [1992](https://en.wikipedia.org/wiki/Spain_at_the_1992_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Spain_at_the_2024_Summer_Olympics){target="_blank"}.
 -   Germany: [2020](https://en.wikipedia.org/wiki/Germany_at_the_2020_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/Germany_at_the_2024_Summer_Olympics){target="_blank"}.
 -   France: [1996](https://en.wikipedia.org/wiki/France_at_the_1996_Summer_Olympics){target="_blank"} and [current performance](https://en.wikipedia.org/wiki/France_at_the_2024_Summer_Olympics){target="_blank"}.
--   Check out my [GitHub repository](https://github.com/dani-f/olympic-medals){target="_blank"} to see how this report was compiled and adapt it to your country.
+-   Check out my [GitHub repository](https://github.com/dani-f/olympic-medals){target="_blank"} to see how this report was compiled and adapt it to any country.
+
+![](image.jpg){width="30%" fig-align="center"}
