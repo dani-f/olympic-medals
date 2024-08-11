@@ -119,7 +119,7 @@ fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summa
 
 To reach the `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country)` medals they won in `r selected_year[[1]]`, they now need to win an average of `r fitted_model$slope[[1]] %>% round(1)` medals per day.
 
-The current count of silver and bronze medals is equal or higher than that achieved in Barcelona, but it's the gold medals that are the missing. Can Spain make up for its gold medal shortcomings?
+The current count of silver and bronze medals is higher than in Barcelona, but it's the gold medals that are missing. Can Spain make up for its gold medal shortcomings?
 
 ```{r}
 #| label: plot running total per medal comparison spain
@@ -141,7 +141,7 @@ plot +
 
 ## Germany
 
-🥇 In a first step, Germany hopes to stop the downward trend in the medal table.
+🥇 Germany hopes to stop the downward trend in the medal table.
 
 🎯 [The official goal](https://www.sueddeutsche.de/sport/olympia-deutschland-medaillenspiegel-ziel-lux.EWYjh2AYTmCducSPwTBPi2){target="_blank"} is to stay in the top 10 like three years ago in Tokyo and to bounce back from that worst result since their reunification.
 
@@ -198,9 +198,9 @@ fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summa
 
 ### Gold, Silver or Bronze?
 
-They need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day to match their `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals from `r selected_year[[1]]`.
+They now need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day to match their `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals from `r selected_year[[1]]`.
 
-While the overall medal target seems far away, with the number of gold medals they've already won, Germany is well on their way to matching their last position.
+While the overall medal target seems far away, with the number of gold medals they've won, Germany is well on their way to matching their last position.
 
 Are they going to reach the 10 times gold from Tokyo?
 
@@ -209,7 +209,8 @@ Are they going to reach the 10 times gold from Tokyo?
 #| fig-height: 8
 
 plot <- plot_olympics_data_per_medal(olympics_list$olympics_medal_table_summarized,
-                                     selected_country[[1]])
+                                     selected_country[[1]],
+                                     with_labels = FALSE)
 
 plot +
   labs(x = "Day",

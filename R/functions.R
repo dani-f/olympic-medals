@@ -151,12 +151,16 @@ plot_olympics_data <- function(olympics_medal_table_summarized_pivoted,
     # Works only with first input country (in case there are more)
     filter(country == selected_country[[1]]) %>%
     # Create a label column for plotting based on conditions
-    mutate(label = if_else(day %in% max_days$max_day,
-                           paste0(running_total_year_country, " Medals\n(",
-                                  running_total_gold_year_country, " Gold\n",
-                                  running_total_silver_year_country, " Silver\n",
-                                  running_total_bronze_year_country, " Bronze)"),
-                           ""))
+    mutate(label = if_else(
+      # For updates during the Olympic games the condition in if_else() was set to
+      # "day %in% max_days$max_day"
+      (year == max_days[1, ]$year & day == max_days[1, ]$max_day) |
+        (year == max_days[2, ]$year & day == max_days[2, ]$max_day),
+      paste0(running_total_year_country, " Medals\n(",
+             running_total_gold_year_country, " Gold\n",
+             running_total_silver_year_country, " Silver\n",
+             running_total_bronze_year_country, " Bronze)"),
+      ""))
   
   plot <- plot_data %>% 
     ggplot(aes(x = day,
