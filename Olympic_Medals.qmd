@@ -1,5 +1,5 @@
 ---
-freeze: false
+# freeze: false # commented out after last update
 title: "Olympic Medals 2024"
 author: "Me"
 date: today
@@ -53,7 +53,7 @@ In this post, we'll compare the officially communicated goals that nations are a
 
 Stay tuned and visit daily, as this report will be refreshed every day to keep you informed of the latest updates to the medal table.
 
-*Last update: `r paste0(format(Sys.time(), format = "%F %R"), "h")`*
+*Last and final update (no further updates will be made to this report): `r paste0(format(Sys.time(), format = "%F %R"), "h")`*
 
 ### Select your Country
 
@@ -116,8 +116,6 @@ fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summa
 ```
 
 ### Gold, Silver or Bronze?
-
-To reach the `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country)` medals they won in `r selected_year[[1]]`, they now need to win an average of `r fitted_model$slope[[1]] %>% round(1)` medals per day.
 
 The current count of silver and bronze medals is higher than in Barcelona, but it's the gold medals that are missing. Can Spain make up for its gold medal shortcomings?
 
@@ -197,8 +195,6 @@ fitted_model <- add_slope_olympics_data(olympics_list$olympics_medal_table_summa
 ```
 
 ### Gold, Silver or Bronze?
-
-They now need to win `r fitted_model$slope[[1]] %>% round(1)` medals on average per day to match their `r fitted_model %>% filter(year == selected_year[[1]]) %>% pull(max_running_total_year_country) %>% round(1)` medals from `r selected_year[[1]]`.
 
 While the overall medal target seems far away, with the number of gold medals they've won, Germany is well on their way to matching their last position.
 
